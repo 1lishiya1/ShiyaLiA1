@@ -39,6 +39,81 @@ public class AssignmentOne {
 
         System.out.println("-------------------------------------------------");
 
+        // Part 5 - Collection of appointments
+
+        System.out.println("Part 5 - Collection of appointments");
+
+        // 创建2个全科医生预约
+        createAppointment("Zzwang", "13800138000", "09:00-10:00", gp1);
+        createAppointment("Lily", "13900139000", "10:30-11:30", gp2);
+
+        // 创建2个儿科医生预约
+        createAppointment("Mr.Zhu", "13600136000", "14:00-15:00", p1);
+        createAppointment("Mrs.Xi", "13700137000", "15:30-16:30", p2);
+
+        // 打印现有预约
+        System.out.println("\n=== All appointment information ===");
+        printExistingAppointments();
+
+        // 取消一个预约
+        System.out.println("\n=== Cancel Booking ===");
+        cancelBooking("13900139000"); // 取消赵女士的预约
+
+        // 再次打印更新后的预约列表
+        System.out.println("\n===  All appointment information after cancel ===");
+        printExistingAppointments();
+
+        System.out.println("--------------------------------------------------");
+
+    }
+
+
+    // 创建新预约并添加到ArrayList
+    public static void createAppointment(String patientName, String mobilePhone,
+                                         String preferredTimeSlot, HealthProfessional doctor) {
+        // 验证必要信息是否完整
+        if (patientName == null || mobilePhone == null || preferredTimeSlot == null || doctor == null) {
+            System.out.println("The appointment information is incomplete.");
+            return;
+        }
+
+        // 创建新预约对象
+        Appointment newAppointment = new Appointment(patientName, mobilePhone, preferredTimeSlot, doctor);
+        appointments.add(newAppointment);
+        System.out.println("Successfully created an appointment: Name: " + patientName + ", Time:" + preferredTimeSlot);
+    }
+
+
+     // 显示ArrayList中现有的所有预约
+    public static void printExistingAppointments() {
+        if (appointments.isEmpty()) {
+            System.out.println("There is no appointment record");
+            return;
+        }
+        for (int i = 0; i < appointments.size(); i++) {
+            appointments.get(i).printAppointmentDetails();
+            System.out.println("=========");
+        }
+    }
+
+    // 根据患者手机号取消预约
+    public static void cancelBooking(String mobilePhone) {
+        if (mobilePhone == null || mobilePhone.trim().isEmpty()) {
+            System.out.println("The mobile phone number cannot be empty");
+            return;
+        }
+
+        for (int i = 0; i < appointments.size(); i++) {
+            Appointment appointment = appointments.get(i);
+            if (mobilePhone.equals(appointment.getMobilePhone())) {
+                System.out.println("Cancel:" + appointment.getPatientName());
+                appointments.remove(i);
+                System.out.println("Cancel successfully！");
+                return;
+            }
+        }
+
+        System.out.println("Can not find phone number: " + mobilePhone);
     }
 }
 
